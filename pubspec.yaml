@@ -1,10 +1,10 @@
 name: badge_manager
-description: A new Flutter project.
-version: 0.0.1
-homepage:
+description: BadgeManager is a corner marker setting tool. Currently supports iOS and Android (Samsung, Huawei, Xiaomi, etc.). If you need other functions, you can expand on this basis.
+version: 1.0.0
+homepage: https://github.com/waitwalker/badge_manager
 
 environment:
-  sdk: ">=2.16.1 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
   flutter: ">=2.5.0"
 
 dependencies:

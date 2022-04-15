@@ -47,6 +47,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   }
 
 
+  /// methodName isSupported
+  /// description 是否支持设置角标
+  /// date 2022/4/15 18:42
+  /// author waitwalker
   void isSupported() async {
     final bool value = await BadgeManager.isSupportedBadge();
     setState(() {
@@ -54,6 +58,10 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
     });
   }
 
+  /// methodName getBrand
+  /// description 获取手机品牌
+  /// date 2022/4/15 18:42
+  /// author waitwalker
   void getBrand() async{
     final String brand = await BadgeManager.getBrand();
     setState(() {
@@ -61,10 +69,18 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
     });
   }
 
+  /// methodName setBadge
+  /// description 设置角标
+  /// date 2022/4/15 18:42
+  /// author waitwalker
   void setBadge() async{
     await BadgeManager.setBadge(count: int.parse(controller.text), title: "通知", content: "this is content");
   }
 
+  /// methodName setBadge
+  /// description 移除角标
+  /// date 2022/4/15 18:42
+  /// author waitwalker
   void removeBadge() async{
     await BadgeManager.removeBadge();
   }
