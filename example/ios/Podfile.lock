@@ -1,0 +1,22 @@
+PODS:
+  - badge_manager (0.0.1):
+    - Flutter
+  - Flutter (1.0.0)
+
+DEPENDENCIES:
+  - badge_manager (from `.symlinks/plugins/badge_manager/ios`)
+  - Flutter (from `Flutter`)
+
+EXTERNAL SOURCES:
+  badge_manager:
+    :path: ".symlinks/plugins/badge_manager/ios"
+  Flutter:
+    :path: Flutter
+
+SPEC CHECKSUMS:
+  badge_manager: 3cef77d3d1e22f694310578368cf0c1c6a1c5803
+  Flutter: 50d75fe2f02b26cc09d224853bb45737f8b3214a
+
+PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c
+
+COCOAPODS: 1.11.3
