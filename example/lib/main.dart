@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:badge_manager/badge_manager.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 void main() {
   runApp(const MyApp());
@@ -29,7 +32,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
       case AppLifecycleState.resumed: //从后台切换前台，界面可见
         break;
       case AppLifecycleState.paused: // 界面不可见，后台
-        print("App进入后台了");
         setBadge();
         break;
       case AppLifecycleState.detached: // APP结束时调用
@@ -71,146 +73,173 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver{
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('BadgeManager'),
         ),
-        body: Column(
-          children: [
-            const Padding(padding: EdgeInsets.only(top: 30)),
-            Text("是否支持：" + supported),
-            const Padding(padding: EdgeInsets.only(top: 30)),
-            InkWell(
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow:  [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      offset: const Offset(0, 1),
-                      blurRadius: 1.5,
-                      spreadRadius: 2.5,),
-                  ],
-                  color: Colors.green,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                alignment: Alignment.center,
-                height: 50,
-                width: 300,
-                child: const Text("点击查看是否支持",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
+        resizeToAvoidBottomInset: false,
+        body: InkWell(
+          child: SafeArea(
+            child: SingleChildScrollView(
+              child: SizedBox(
+                child: Container(
+                  alignment: Alignment.center,
+                  color: Colors.white,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      Text("是否支持：" + supported),
+                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      InkWell(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow:  [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                offset: const Offset(0, 1),
+                                blurRadius: 1.5,
+                                spreadRadius: 2.5,),
+                            ],
+                            color: Colors.green,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          alignment: Alignment.center,
+                          height: 50,
+                          width: 300,
+                          child: const Text("点击查看是否支持",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        onTap: (){
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          isSupported();
+                        },
+                      ),
+
+                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      Text("手机品牌：" + brandStr),
+                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      InkWell(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow:  [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                offset: const Offset(0, 1),
+                                blurRadius: 1.5,
+                                spreadRadius: 2.5,),
+                            ],
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          alignment: Alignment.center,
+                          height: 50,
+                          width: 300,
+                          child: const Text("点击获取手机品牌",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        onTap: (){
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          getBrand();
+                        },
+                      ),
+
+                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      SizedBox(
+                        height: 50,
+                        width: 300,
+                        child: CupertinoTextField(
+                          controller: controller,
+                          keyboardType: TextInputType.number,
+                          placeholder: "请输入badge的数字",
+                        ),
+                      ),
+
+                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      InkWell(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow:  [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                offset: const Offset(0, 1),
+                                blurRadius: 1.5,
+                                spreadRadius: 2.5,),
+                            ],
+                            color: Colors.lightBlue,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          alignment: Alignment.center,
+                          height: 50,
+                          width: 300,
+                          child: const Text("点击设置角标",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        onTap: (){
+                          if (controller.text.isNotEmpty) {
+                            FocusScope.of(context).requestFocus(FocusNode());
+                            setBadge();
+                          } else {
+                            Fluttertoast.showToast(msg: "请先输入badge count");
+                          }
+                        },
+                      ),
+
+                      const Padding(padding: EdgeInsets.only(top: 30)),
+                      InkWell(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            boxShadow:  [
+                              BoxShadow(
+                                color: Colors.black.withOpacity(0.2),
+                                offset: const Offset(0, 1),
+                                blurRadius: 1.5,
+                                spreadRadius: 2.5,),
+                            ],
+                            color: Colors.lime,
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          alignment: Alignment.center,
+                          height: 50,
+                          width: 300,
+                          child: const Text("点击移除角标",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18,
+                            ),
+                          ),
+                        ),
+                        onTap: (){
+                          FocusScope.of(context).requestFocus(FocusNode());
+                          removeBadge();
+                        },
+                      ),
+                      const Padding(padding: EdgeInsets.only(top: 330)),
+                    ],
                   ),
                 ),
               ),
-              onTap: (){
-                isSupported();
-              },
             ),
-
-            const Padding(padding: EdgeInsets.only(top: 30)),
-            SizedBox(
-              height: 50,
-              child: CupertinoTextField(
-                controller: controller,
-                keyboardType: TextInputType.number,
-                placeholder: "请输入badge的数字",
-              ),
-            ),
-
-            const Padding(padding: EdgeInsets.only(top: 30)),
-            Text("手机品牌：" + brandStr),
-            const Padding(padding: EdgeInsets.only(top: 30)),
-            InkWell(
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow:  [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      offset: const Offset(0, 1),
-                      blurRadius: 1.5,
-                      spreadRadius: 2.5,),
-                  ],
-                  color: Colors.orange,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                alignment: Alignment.center,
-                height: 50,
-                width: 300,
-                child: const Text("点击获取手机品牌",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              onTap: (){
-                getBrand();
-              },
-            ),
-
-            const Padding(padding: EdgeInsets.only(top: 30)),
-            InkWell(
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow:  [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      offset: const Offset(0, 1),
-                      blurRadius: 1.5,
-                      spreadRadius: 2.5,),
-                  ],
-                  color: Colors.lightBlue,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                alignment: Alignment.center,
-                height: 50,
-                width: 300,
-                child: const Text("点击设置角标",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              onTap: (){
-                setBadge();
-              },
-            ),
-
-            const Padding(padding: EdgeInsets.only(top: 30)),
-            InkWell(
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow:  [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.2),
-                      offset: const Offset(0, 1),
-                      blurRadius: 1.5,
-                      spreadRadius: 2.5,),
-                  ],
-                  color: Colors.lime,
-                  borderRadius: BorderRadius.circular(8.0),
-                ),
-                alignment: Alignment.center,
-                height: 50,
-                width: 300,
-                child: const Text("点击移除角标",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
-                ),
-              ),
-              onTap: (){
-                removeBadge();
-              },
-            ),
-
-          ],
+          ),
+          onTap: (){
+            FocusScope.of(context).requestFocus(FocusNode());
+          },
         ),
       ),
     );
